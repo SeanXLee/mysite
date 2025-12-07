@@ -1,0 +1,251 @@
+/* ========== 全局基础 ========== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;  /* 顶部导航 + 下面内容 */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "Helvetica Neue", Arial, sans-serif;
+  color: #e5e7eb;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 背景层：模糊 + 降饱和 + 稍微暗一点，避免白边用 inset 放大一点 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -12px;                          /* 向外扩一圈，blur 不会露白边 */
+  background-image: url("img/bg1.JPG");       /* 按你的文件名改 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: grayscale(25%) brightness(0.6) saturate(80%) blur(5px);
+  z-index: -1;
+}
+
+/* ========== 顶部导航栏 ========== */
+
+/* ========== 顶部导航栏（黑色渐变） ========== */
+
+.topbar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+
+  /* 关键渐变：类似 Nitro 官网 */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.80),
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.60)
+  );
+
+  backdrop-filter: blur(10px);     /* 轻微模糊让过渡更柔和 */
+  /* border-bottom: 5px solid rgba(255, 255, 255, 0.06); */
+  position: relative;
+  z-index: 10;
+}
+
+
+.logo {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffffff; /* 类似 NITRO 的红色调 */
+}
+
+/* 横向导航菜单 */
+.nav {
+  display: flex;
+  gap: 32px;
+}
+
+.nav a {
+  position: relative;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;         /* Oswald 合法范围：200 / 300 / 400 / 500 / 600 / 700 */
+  font-size: 16px;       
+  letter-spacing: 0.03em;
+
+  
+  color: #e5e7eb;
+  text-decoration: none;
+  padding: 4px 0;
+  transition: color 0.18s ease-out, transform 0.18s ease-out;
+}
+
+/* hover 变浅色 + 轻微上移，并加一条细线 */
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #a0a0a0;
+  transition: width 0.18s ease-out;
+}
+
+.nav a:hover {
+  color: #a0a0a0;          /* 浅色 */
+  transform: translateY(-1px);
+}
+
+.nav a:hover::after {
+  width: 100%;             /* 底部亮线拉满 */
+}
+
+/* 每个 nav-item 作为定位容器 */
+.nav-item {
+  position: relative;
+}
+
+/* 下拉面板本体 */
+.dropdown {
+  position: absolute;
+  top: 140%;           /* 比菜单稍微往下一点 */
+  left: 0;
+  min-width: 180px;
+  padding: 10px 0;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+  z-index: 20;
+}
+
+/* 下拉里的链接样式 */
+.dropdown a {
+  display: block;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #e5e7eb;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dropdown a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* 关键：鼠标悬停在顶层 nav-item 时显示下拉 */
+.nav-item.has-dropdown:hover .dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* 小箭头 */
+.arrow {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 10px;
+  transition: transform 0.2s ease;
+}
+
+/* 当悬停 nav-item 时箭头旋转 */
+.nav-item.has-dropdown:hover .arrow {
+  transform: rotate(90deg);
+}
+
+/* 顶栏默认渐变 */
+.topbar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  position: relative;
+  z-index: 10;
+  /* 顶栏本身先不要背景，用伪元素来画 */
+  background: transparent;
+}
+
+.topbar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  position: relative;
+  z-index: 10;
+  background: transparent; /* 背景交给 ::before */
+}
+
+.topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.60)
+  );
+  opacity: 0.55;                 /* 默认稍微透一点 */
+  transition: opacity 0.25s ease;
+}
+
+/* 鼠标移到整个 topbar 区域时变更黑 */
+.topbar:hover::before {
+  opacity: 1;
+}
+
+
+
+
+
+/* ========== 主内容区域（中央） ========== */
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 48px;  /* 稍微离底部远一点 */
+}
+
+.kicker {
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #bfdbfe;
+  margin-bottom: 16px;
+}
+
+.content h1 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;         /* Oswald 合法范围：200 / 300 / 400 / 500 / 600 / 700 */
+  font-size: 72px;          /* 🔥 这个最关键！调大字体 */
+  letter-spacing: 0.02em;
+  color: #e5e7eb;
+  text-shadow: 0 0 25px rgba(0, 0, 0, 0.75);
+}
+
+.subtitle {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  font-size: 32px;  
+  letter-spacing: 0.02em;
+  color: #e5e7eb;
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+}
