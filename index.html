@@ -7,9 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 
 </head>
+
+
+
+
+
+
+
+
+
 
 <body>
   <!-- 顶部导航栏 -->
@@ -58,6 +67,9 @@
     </nav>
 
 
+
+
+
   </header>
 
   <!-- 主内容 -->
@@ -66,5 +78,80 @@
     <h1>Hey, you.</h1>
     <p class="subtitle" style="margin-top: 10px;">Wish you a good day!</p>
   </main>
+
+<!-- 左上角彩蛋图片 -->
+<div class="kilroy">
+  <img src="img/kilroy.png" class="kilroy-img" alt="">
+  <div class="blink blinkL"></div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const topbar = document.querySelector('.topbar');
+    const egg = document.querySelector('.kilroy-img');
+      const L = document.querySelector('.blinkL');
+
+    let showCount = 0;          // 当前已经显示次数
+    let isShowing = false;      // 是否正在显示
+    let hasReachedLimit = false; // ⭐ 标志位：是否已经达到 2 次限制
+
+    function blinkOnce(delay) {
+        setTimeout(() => {
+          L.style.opacity = 1;
+        
+
+          setTimeout(() => {
+            L.style.opacity = 0;
+          
+          }, 130); // 眨眼闭合持续时间
+        }, delay);
+      }
+
+      function blinkTwice() {
+        blinkOnce(700);  // 第一次眨眼
+        blinkOnce(1300);  // 第二次眨眼
+      }
+
+    topbar.addEventListener('mouseenter', () => {
+
+      // 如果已经达到了上限 → 不再触发
+      if (hasReachedLimit) {
+        console.log("已达到 2 次限制，不再显示。");
+        return;
+      }
+
+      if (isShowing) return;  // 当前正在显示，忽略触发
+
+      // 增加计数
+      showCount++;
+
+      // 如果达到 2 次 → 设置标志位
+      if (showCount >= 2) {
+        hasReachedLimit = true;     // ⭐ 标志位变成 true
+      }
+
+      // 显示彩蛋
+      isShowing = true;
+      egg.classList.add('show');
+
+      blinkTwice();
+
+      // 2 秒后隐藏
+      setTimeout(() => {
+        egg.classList.remove('show');
+        isShowing = false;
+      }, 3000);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
 </body>
 </html>

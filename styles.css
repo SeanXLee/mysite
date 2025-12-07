@@ -212,6 +212,49 @@ body::before {
 
 
 
+/* 左上角彩蛋图（默认隐藏） */
+.kilroy-img {
+  position: fixed;
+  top: 14px;
+  left: 16px;
+  width: 120px;
+  opacity: 0;              /* 默认隐藏 */
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 20;
+}
+
+.kilroy-img.show {
+  opacity: 1;              /* JS 加上 .show 时才显示 */
+}
+
+
+
+/* =============================
+   眨眼白色方块（眼皮）
+   ============================= */
+.blink {
+  position: absolute;
+  width: 20px;     /* 眼皮宽度：随你的 PNG 调整 */
+  height: 6px;    /* 眼皮高度：随你的 PNG 调整 */
+  background: #ffffff;
+  opacity: 0;      /* 默认不可见 */
+  transition: opacity 0.08s ease;
+    z-index: 200;
+}
+
+/* 遮挡位置（需你微调） */
+.blinkL {
+  top: 25px;   /* ← 这个位置要自己调 */
+  left: 59px;  /* ← 这个位置要自己调 */
+}
+
+
+
+
+
+
+
 /* ========== 主内容区域（中央） ========== */
 
 .content {
