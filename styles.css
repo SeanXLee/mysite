@@ -8,12 +8,16 @@
 
 body {
   height: 100vh;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;  /* 顶部导航 + 下面内容 */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
                "Helvetica Neue", Arial, sans-serif;
   color: #e5e7eb;
-  overflow: hidden;
+
+ overflow-y: auto;   /* 允许垂直滚动 */
+ overflow-x: hidden; /* 横向不要滚动 */
+ /*  overflow: hidden;   /* 禁止滚动条！ */
+
   position: relative;
 }
 
@@ -33,34 +37,55 @@ body::before {
 /* ========== 顶部导航栏 ========== */
 
 /* ========== 顶部导航栏（黑色渐变） ========== */
+/* ========== 顶部导航栏（黑色渐变） ========== */
 
 .topbar {
+  position: fixed;        /* 固定在屏幕顶部 */
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 40px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 48px;
 
-  /* 关键渐变：类似 Nitro 官网 */
+  /* 顶栏本身先不要纯色背景，用伪元素来画渐变 */
+  background: transparent;
+  backdrop-filter: blur(10px);     /* 轻微模糊让过渡更柔和 */
+
+  z-index: 10;
+}
+
+.topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.80),
+    rgba(0, 0, 0, 0.8),
     rgba(0, 0, 0, 0.75),
     rgba(0, 0, 0, 0.60)
   );
-
-  backdrop-filter: blur(10px);     /* 轻微模糊让过渡更柔和 */
-  /* border-bottom: 5px solid rgba(255, 255, 255, 0.06); */
-  position: relative;
-  z-index: 10;
+  opacity: 0.55;                 /* 默认稍微透一点 */
+  transition: opacity 0.25s ease;
 }
+
+/* 鼠标移到整个 topbar 区域时变更黑 */
+.topbar:hover::before {
+  opacity: 1;
+}
+
+
 
 
 .logo {
   font-size: 26px;
   font-weight: 800;
   letter-spacing: 2px;
-  color: #ffffff; /* 类似 NITRO 的红色调 */
+  color: #ffffff; 
 }
 
 /* 横向导航菜单 */
@@ -167,49 +192,6 @@ body::before {
   transform: rotate(90deg);
 }
 
-/* 顶栏默认渐变 */
-.topbar {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 48px;
-  position: relative;
-  z-index: 10;
-  /* 顶栏本身先不要背景，用伪元素来画 */
-  background: transparent;
-}
-
-.topbar {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 48px;
-  position: relative;
-  z-index: 10;
-  background: transparent; /* 背景交给 ::before */
-}
-
-.topbar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.8),
-    rgba(0, 0, 0, 0.75),
-    rgba(0, 0, 0, 0.60)
-  );
-  opacity: 0.55;                 /* 默认稍微透一点 */
-  transition: opacity 0.25s ease;
-}
-
-/* 鼠标移到整个 topbar 区域时变更黑 */
-.topbar:hover::before {
-  opacity: 1;
-}
 
 
 
@@ -259,16 +241,43 @@ body::before {
 
 
 /* ========== 主内容区域（中央） ========== */
+/* ========== 主内容区域（中央） ========== */
 
-.content {
-  flex: 1;
+.hero {
+  height: calc(100vh - 40px);   /* Hero 的可视高度 = 屏幕高度 - 顶栏 40px */
+  padding-top: 40px;            /* 为 hero 区预留导航栏位置 */
+
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  justify-content: center;      /* 垂直居中 */
+  align-items: center;          /* 水平居中 */
+
   text-align: center;
-  padding-bottom: 48px;  /* 稍微离底部远一点 */
+  padding-left: 20px;           /* 防止过窄 */
+  padding-right: 20px;
 }
+
+
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;         /* Oswald 合法范围：200 / 300 / 400 / 500 / 600 / 700 */
+  font-size: 72px;          /* 🔥 这个最关键！调大字体 */
+  letter-spacing: 0.02em;
+  color: #e5e7eb;
+  text-shadow: 0 0 25px rgba(0, 0, 0, 0.75);
+}
+
+
+.content {
+  max-width: 900px;               /* 正文宽度（可调） */
+  margin: 40px auto 80px;         /* 上下间距，左右居中 */
+  padding: 0 24px 80px;
+  text-align: left;               /* 正文一般用左对齐，更好看 */
+}
+
+
+
+
 
 .kicker {
   font-size: 14px;
